@@ -1,0 +1,105 @@
+[project]
+name = "overture2hdx"
+version = "0.0.1"
+dynamic = ["version"]
+description = "Lib to convert Overture data in GIS formats and upload it to HDX "
+readme = "README.md"
+authors = [
+    {name = "Kshitij Raj Sharma", email = "skshitizraj@gmail.com"},
+]
+license = {text = "GPL-3.0-only"}
+requires-python = ">=3.9"
+dependencies = [
+    "geopandas>=1.0.1",
+    "requests>=2.32.3",
+    "duckdb>=1.1.0",
+    "hdx-python-api>=6.3.4",
+]
+keywords = ["overture", "humanitarian", "duckdb","hdx"]
+classifiers = [
+    "Topic :: Utilities",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+[project.urls]
+homepage = "https://github.com/kshitijrajsharma/overture2hdx"
+documentation = "https://github.com/kshitijrajsharma/overture2hdx"
+repository = "https://github.com/kshitijrajsharma/overture2hdx"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.4.2",
+    "pytest-mock>=3.14.0",
+    "coverage>=7.6.1",
+    "coverage-badge>=1.1.2",
+]
+docs = [
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.4.2",
+    "mkdocstrings-python>=1.7.0",
+    "mkdocs-exclude>=1.0.2",
+]
+
+
+[build-system]
+requires = ["pdm-pep517>=1.1.4"]
+build-backend = "pdm.pep517.api"
+
+[tool.pytest.ini_options]
+addopts = "-ra -q -p no:warnings"
+testpaths = [
+    "tests",
+]
+pythonpath = "overture2hdx"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "semver"
+version_provider = "pep621"
+update_changelog_on_bump = true
+version_files = [
+    "pyproject.toml:version",
+    "overture2hdx/__version__.py",
+]
+
+[tool.pdm]
+version = {from = "overture2hdx/__version__.py"}
+
+[tool.pdm.build]
+includes = ["overture2hdx"]
+source-includes = ["tests", "LICENSE", "README.md"]
+
+[tool.black]
+line-length = 132
+target-versions = ["py39", "py310", "py311"]
+
+[tool.ruff]
+fix = true
+line-length = 132
+target-version = "py39"
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".vscode",
+    "__pypackages__",
+    "build",
+    "dist",
+    "overture2hdx/__version__.py",
+]
+
+[tool.ruff.lint]
+select = ["I", "E", "W", "D", "B", "F", "N", "Q"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.coverage.run]
+source = ["overture2hdx"]
+
+[tool.coverage.report]
+show_missing = true

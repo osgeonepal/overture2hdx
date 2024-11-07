@@ -1,4 +1,4 @@
-# Overture Map Exporter
+# Overture Map Data 2 HDX
 
 This project is designed to export geographic data from Overture Maps and upload it to the Humanitarian Data Exchange (HDX). The data is processed using DuckDB and can be exported in various formats such as GeoJSON, GPKG, and ESRI Shapefile.
 

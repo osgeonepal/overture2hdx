@@ -4,7 +4,7 @@ site_url: "https://github.com/kshitijrajsharma/overture2hdx"
 
 repo_name: "kshitijrajsharma/overture2hdx"
 repo_url: "https://github.com/kshitijrajsharma/overture2hdx"
-edit_uri: "edit/main/docs/"
+# edit_uri: "edit/main/docs/"
 
 extra:
   social:

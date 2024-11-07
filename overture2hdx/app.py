@@ -237,7 +237,7 @@ class OvertureMapExporter:
             )
             WHERE {where_clause} )
             """
-            logging.info(query)
+            logging.debug(query)
             dt_name = f"{self.config.hdx_key}_{self.config.country_code.lower()}_{self.slugify(category_name)}"
 
             dataset = Dataset(

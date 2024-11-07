@@ -1,1 +1,2 @@
-from .app import Config, OvertureMapExporter
+from .app import Config
+from .app import OvertureMapExporter as Exporter

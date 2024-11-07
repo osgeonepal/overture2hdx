@@ -368,6 +368,29 @@ if __name__ == "__main__":
         formats:
             - gpkg
             - shp
+
+      - Buildings:
+        select:
+            - id
+            - names.primary as name
+            - class as class
+            - subtype as subtype
+            - height as height
+            - level as level
+            - num_floors as num_floors
+            - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
+        hdx:
+            title: Buildings of Nepal
+            notes:  Overturemaps Export for Nepal . Data might known to have errors however gone through validation checks to detect map errors, breakage, and vandalism . Sources would be combination of OSM and Other openly available datasets in the region including facebook roads and ESRI community datasets
+            tags:
+            - geodata
+        theme:
+            - buildings
+        feature_type:
+            - building
+        formats:
+            - gpkg
+            - shp
     """
 
     try:

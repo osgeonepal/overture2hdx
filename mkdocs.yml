@@ -1,5 +1,5 @@
-site_name: overture2hdx
-site_description: Lib to convert Overture data in GIS formats and upload it to HDX 
+site_name: Overture2HDX
+site_description: Library to convert Overture data into GIS formats and upload it to HDX
 site_url: "https://github.com/kshitijrajsharma/overture2hdx"
 
 repo_name: "kshitijrajsharma/overture2hdx"
@@ -10,7 +10,6 @@ extra:
   social:
     - icon: "fontawesome/brands/github"
       link: "https://github.com/kshitijrajsharma/"
-
 
 theme:
   name: material
@@ -25,34 +24,6 @@ markdown_extensions:
   - toc:
       permalink: true
       title: Page contents
-  - admonition
-  - pymdownx.details
-  - pymdownx.superfences
-  - pymdownx.highlight
-  - pymdownx.extra
-  - pymdownx.emoji:
-  - pymdownx.tabbed:
-      alternate_style: true
-
-plugins:
-  - search
-  - exclude:
-      glob:
-        - plugins/*
-        - __pycache__/*
-  - mkdocstrings:
-      handlers:
-        python:
-          paths: [.]
-          options:
-            members_order: source
-            separate_signature: true
-            filters: ["!^_"]
-            docstring_options:
-              ignore_init_summary: true
-            merge_init_into_class: true
 
 nav:
-  - Home: README.md
-  - Dev: dev.md
-  - Preprocess : prepare-admin-data.md
+  - Home: Readme.md

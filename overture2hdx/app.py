@@ -238,11 +238,12 @@ class OvertureMapExporter:
             WHERE {where_clause} )
             """
             logging.info(query)
+            dt_name = f"{self.config.hdx_key}_{self.config.country_code.lower()}_{self.slugify(category_name)}"
 
             dataset = Dataset(
                 {
                     "title": hdx_title,
-                    "name": f"{self.config.hdx_key}_{self.config.country_code.lower()}_{self.slugify(category_name)}",
+                    "name": dt_name,
                     "notes": hdx_notes,
                     "caveats": hdx_caveats,
                     "private": False,
@@ -284,9 +285,7 @@ class OvertureMapExporter:
                 self.conn.execute(
                     f"COPY {category_name} TO '{filename}' WITH (FORMAT GDAL,SRS 'EPSG:4326', DRIVER '{format_drivers.get(fmt)}')"
                 )
-                zip_name = (
-                    f"{self.config.country_code}_{category_name}_{fmt}.zip".lower()
-                )
+                zip_name = f"{dt_name}_{fmt}.zip".lower()
                 zip_path = self.file_to_zip(dir_path, zip_name)
                 zip_paths.append(zip_path)
                 resource = Resource(

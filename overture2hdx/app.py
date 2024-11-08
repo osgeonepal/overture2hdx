@@ -21,10 +21,15 @@ from .__version__ import __version__
 
 
 def setup_logging(level=None, format=None):
+    """
+    Set up logging configuration.
+
+    Args:
+        level (str, optional): Logging level. Defaults to None.
+        format (str, optional): Logging format. Defaults to None.
+    """
     level = level or os.environ.get("LOG_LEVEL", "INFO")
-    format = format or os.environ.get(
-        "LOG_FORMAT", "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
+    format = format or os.environ.get("LOG_FORMAT", "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     logging.basicConfig(level=level, format=format)
 
 
@@ -43,13 +48,24 @@ class Config:
         log_level: str = None,
         log_format: str = None,
     ):
+        """
+        Initialize the configuration.
+
+        Args:
+            config_yaml (str): YAML configuration string.
+            hdx_site (str, optional): HDX site. Defaults to None.
+            hdx_api_key (str, optional): HDX API key. Defaults to None.
+            hdx_owner_org (str, optional): HDX owner organization. Defaults to None.
+            hdx_maintainer (str, optional): HDX maintainer. Defaults to None.
+            overture_version (str, optional): Overture release version. Defaults to None.
+            log_level (str, optional): Logging level. Defaults to None.
+            log_format (str, optional): Logging format. Defaults to None.
+        """
         self.HDX_SITE = hdx_site or os.environ.get("HDX_SITE") or "demo"
         self.HDX_API_KEY = hdx_api_key or os.environ.get("HDX_API_KEY")
         self.HDX_OWNER_ORG = hdx_owner_org or os.environ.get("HDX_OWNER_ORG")
         self.HDX_MAINTAINER = hdx_maintainer or os.environ.get("HDX_MAINTAINER")
-        self.OVERTURE_RELEASE_VERSION = overture_version or os.environ.get(
-            "OVERTURE_VERSION", "2024-09-18.0"
-        )
+        self.OVERTURE_RELEASE_VERSION = overture_version or os.environ.get("OVERTURE_VERSION", "2024-09-18.0")
 
         self.config = yaml.safe_load(config_yaml)
 
@@ -60,10 +76,14 @@ class Config:
         setup_logging(level=log_level, format=log_format)
 
     def setup_config(self):
+        """
+        Set up the HDX configuration.
+
+        Raises:
+            ValueError: If HDX credentials (API key, owner org, maintainer) are not provided.
+        """
         if not (self.HDX_API_KEY and self.HDX_OWNER_ORG and self.HDX_MAINTAINER):
-            raise ValueError(
-                "HDX credentials (API key, owner org, maintainer) are required"
-            )
+            raise ValueError("HDX credentials (API key, owner org, maintainer) are required")
 
         self.HDX_URL_PREFIX = Configuration.create(
             hdx_site=self.HDX_SITE,
@@ -73,13 +93,18 @@ class Config:
         logging.info(f"Using HDX site: {self.HDX_URL_PREFIX}")
 
     def validate_config(self):
+        """
+        Validate the configuration.
+
+        Raises:
+            ValueError: If HDX credentials environment variables are not set.
+            ValueError: If ISO3 country code is not specified in YAML configuration.
+        """
         if not (self.HDX_API_KEY and self.HDX_OWNER_ORG and self.HDX_MAINTAINER):
             raise ValueError("HDX credentials environment variables not set")
 
         if not self.config.get("iso3"):
-            raise ValueError(
-                "ISO3 country code must be specified in YAML configuration"
-            )
+            raise ValueError("ISO3 country code must be specified in YAML configuration")
 
     @property
     def country_code(self):
@@ -136,6 +161,26 @@ class Config:
 
 
 class OvertureMapExporter:
+    """
+    A class to export map data from OvertureMaps to various formats and upload to HDX.
+    Attributes:
+        config (Config): Configuration object containing export settings.
+        duckdb_con (str): DuckDB connection string. Defaults to None, which uses the environment variable "DUCKDB_CON" or in-memory database.
+    Methods:
+        slugify(s: str) -> str:
+            Converts a string to a slug format (lowercase with non-alphanumeric characters replaced by underscores).
+        build_select_clause(select_fields: List[str]) -> str:
+            Constructs the SELECT clause for SQL queries based on the provided fields.
+        build_where_clause(where_conditions: List[str]) -> str:
+            Constructs the WHERE clause for SQL queries based on the provided conditions and bounding box.
+        file_to_zip(working_dir: str, zip_path: str) -> str:
+            Compresses files in the working directory into a ZIP file and adds metadata files.
+        cleanup(zip_paths: List[str]):
+            Removes the specified ZIP files from the filesystem.
+        export() -> Dict:
+            Executes the export process, including data extraction, transformation, and uploading to HDX.
+    """
+
     def __init__(self, config: Config, duckdb_con: str = None):
         self.config = config
         self.duck_con = duckdb_con or os.environ.get("DUCKDB_CON", ":memory:")
@@ -157,12 +202,12 @@ class OvertureMapExporter:
         """
 
         if self.config.boundary_gdf_geojson_str:
-            bbox_conditions = f"({bbox_conditions}) AND ST_Intersects(geom, ST_GeomFromGeoJSON('{self.config.boundary_gdf_geojson_str}'))"
+            bbox_conditions = (
+                f"({bbox_conditions}) AND ST_Intersects(geom, ST_GeomFromGeoJSON('{self.config.boundary_gdf_geojson_str}'))"
+            )
 
         if where_conditions:
-            custom_conditions = " AND ".join(
-                f"({condition})" for condition in where_conditions
-            )
+            custom_conditions = " AND ".join(f"({condition})" for condition in where_conditions)
             return f"({bbox_conditions}) AND ({custom_conditions})"
 
         return bbox_conditions
@@ -191,6 +236,7 @@ class OvertureMapExporter:
             os.remove(zip_path)
 
     def export(self) -> Dict:
+
         setup_queries = [
             "INSTALL spatial",
             "INSTALL httpfs",
@@ -214,9 +260,7 @@ class OvertureMapExporter:
             output_formats = category_config.get("formats", [])
             hdx = category_config.get("hdx")
             hdx_title = hdx.get("title")
-            hdx_notes = hdx.get(
-                "notes", "Overturemaps Export to use in GIS applications"
-            )
+            hdx_notes = hdx.get("notes", "Overturemaps Export to use in GIS applications")
             hdx_tags = hdx.get("tags", ["geodata"])
             hdx_caveats = hdx.get(
                 "caveats",
@@ -256,11 +300,7 @@ class OvertureMapExporter:
                     "subnational": self.config.hdx_subnational,
                 }
             )
-            dataset.set_time_period(
-                datetime.strptime(
-                    self.config.OVERTURE_RELEASE_VERSION.split(".")[0], "%Y-%m-%d"
-                )
-            )
+            dataset.set_time_period(datetime.strptime(self.config.OVERTURE_RELEASE_VERSION.split(".")[0], "%Y-%m-%d"))
             dataset.set_expected_update_frequency(self.config.frequency)
             dataset.add_other_location(self.config.country_code)
             for tag in hdx_tags:
@@ -306,101 +346,3 @@ class OvertureMapExporter:
 
         self.conn.close()
         return results
-
-
-if __name__ == "__main__":
-
-    geom = json.dumps(
-        {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                        "coordinates": [
-                            [
-                                [83.98047393581618, 28.255338988044088],
-                                [83.973540694181, 28.230486421513703],
-                                [83.91927014759125, 28.214265947308945],
-                                [83.97832224013575, 28.195093119231174],
-                                [83.96971545741735, 28.158212628626416],
-                                [84.00175181531534, 28.19361814379657],
-                                [84.03187555483152, 28.168540447741847],
-                                [84.01059767533235, 28.208788347541898],
-                                [84.0342663278089, 28.255549578267903],
-                                [83.99960011963498, 28.228801292171724],
-                                [83.98047393581618, 28.255338988044088],
-                            ]
-                        ],
-                        "type": "Polygon",
-                    },
-                }
-            ],
-        }
-    )
-    config_yaml_mini = f"""
-    iso3: npl
-    geom: {geom}
-    key: osgeonepal_pkr
-    subnational: true
-    frequency: yearly
-    categories:
-    - Roads:
-        select:
-            - id
-            - names.primary as name
-            - class as class
-            - subclass as subclass
-            - UNNEST(JSON_EXTRACT(road_surface, '$[*].value')) as road_surface
-            - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
-        hdx:
-            title: Roads of Pokhara
-            notes:  Overturemaps Export for Pokhara . Data might known to have errors however gone through validation checks to detect map errors, breakage, and vandalism . Sources would be combination of OSM and Other openly available datasets in the region including facebook roads and ESRI community datasets
-            tags:
-            - geodata
-            - transportation
-            - roads
-        theme:
-            - transportation
-        feature_type:
-            - segment
-        formats:
-            - gpkg
-            - shp
-
-      - Buildings:
-        select:
-            - id
-            - names.primary as name
-            - class as class
-            - subtype as subtype
-            - height as height
-            - level as level
-            - num_floors as num_floors
-            - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
-        hdx:
-            title: Buildings of Nepal
-            notes:  Overturemaps Export for Nepal . Data might known to have errors however gone through validation checks to detect map errors, breakage, and vandalism . Sources would be combination of OSM and Other openly available datasets in the region including facebook roads and ESRI community datasets
-            tags:
-            - geodata
-        theme:
-            - buildings
-        feature_type:
-            - building
-        formats:
-            - gpkg
-            - shp
-    """
-
-    try:
-        config = Config(
-            config_yaml=config_yaml_mini,
-            log_level="DEBUG",
-            log_format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        )
-        exporter = OvertureMapExporter(config)
-        results = exporter.export()
-        logging.info(results)
-    except Exception as e:
-        logging.error(f"Error: {str(e)}")

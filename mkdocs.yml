@@ -16,6 +16,10 @@ theme:
   palette:
     primary: custom
 
+plugins:
+  - mkdocstrings
+  - search
+
 extra_css:
   - css/extra.css
 
@@ -30,3 +34,4 @@ nav:
   - Usage: usage.md
   - Configuration: config.md
   - Contributing: contributing.md
+  - Reference: reference.md

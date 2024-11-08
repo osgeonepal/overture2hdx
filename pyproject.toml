@@ -1,6 +1,6 @@
 [project]
 name = "overture2hdx"
-version = "0.0.2"
+version = "0.0.3"
 dynamic = ["version"]
 description = "Lib to convert Overture data in GIS formats and upload it to HDX "
 readme = "Readme.md"

@@ -3,7 +3,7 @@ name = "overture2hdx"
 version = "0.0.2"
 dynamic = ["version"]
 description = "Lib to convert Overture data in GIS formats and upload it to HDX "
-readme = "README.md"
+readme = "Readme.md"
 authors = [
     {name = "Kshitij Raj Sharma", email = "skshitizraj@gmail.com"},
 ]

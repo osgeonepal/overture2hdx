@@ -4,6 +4,78 @@ The application is configured using a YAML file and environment variables.
 
 ## YAML Configuration
 
+
+### YAML Fields
+
+- **iso3**: The ISO3 country code. This is a required field.
+- **geom**: The geometry in GeoJSON format. This is used to define the area of interest.
+- **key**: A unique key for the dataset.
+- **subnational**: A boolean indicating whether the data is subnational.
+- **frequency**: The update frequency of the dataset (e.g., yearly, monthly).
+- **categories**: A list of categories to be exported. Each category contains:
+  - **select**: A list of fields to select from the data.
+  - **hdx**: HDX-specific metadata including:
+    - **title**: The title of the dataset.
+    - **notes**: Notes or description of the dataset.
+    - **tags**: A list of tags for the dataset.
+  - **theme**: The theme of the data (e.g., transportation).
+  - **feature_type**: The type of features to export (e.g., segment).
+  - **formats**: A list of formats to export the data in (e.g., gpkg, shp).
+
+## Environment Variables
+
+The application uses several environment variables to configure its behavior. Below is a list of the environment variables and their descriptions:
+
+### HDX_SITE
+
+- **Description**: The HDX site to use.
+- **Default**: `demo`
+- **Example**: `export HDX_SITE=prod`
+
+### HDX_API_KEY
+
+- **Description**: The API key for accessing HDX.
+- **Required**: Yes
+- **Example**: `export HDX_API_KEY=your_hdx_api_key`
+
+### HDX_OWNER_ORG
+
+- **Description**: The owner organization on HDX.
+- **Required**: Yes
+- **Example**: `export HDX_OWNER_ORG=your_hdx_owner_org`
+
+### HDX_MAINTAINER
+
+- **Description**: The maintainer for the dataset on HDX.
+- **Required**: Yes
+- **Example**: `export HDX_MAINTAINER=your_hdx_maintainer`
+
+### OVERTURE_VERSION
+
+- **Description**: The release version of Overture data.
+- **Default**: `2024-09-18.0`
+- **Example**: `export OVERTURE_VERSION=2024-09-18.0`
+
+### LOG_LEVEL
+
+- **Description**: The logging level.
+- **Default**: `INFO`
+- **Example**: `export LOG_LEVEL=DEBUG`
+
+### LOG_FORMAT
+
+- **Description**: The logging format.
+- **Default**: `%(asctime)s - %(name)s - %(levelname)s - %(message)s`
+- **Example**: `export LOG_FORMAT="%(asctime)s - %(name)s - %(levelname)s - %(message)s"`
+
+### DUCKDB_CON
+
+- **Description**: The DuckDB connection string.
+- **Default**: `:memory:`
+- **Example**: `export DUCKDB_CON=your_duckdb_connection_string`
+
+## Example : 
+
 ```python
 import json
 
@@ -91,55 +163,3 @@ config_yaml_mini = f"""
     """
 
 ```
-
-## Environment Variables
-
-The application uses several environment variables to configure its behavior. Below is a list of the environment variables and their descriptions:
-
-### HDX_SITE
-
-- **Description**: The HDX site to use.
-- **Default**: `demo`
-- **Example**: `export HDX_SITE=prod`
-
-### HDX_API_KEY
-
-- **Description**: The API key for accessing HDX.
-- **Required**: Yes
-- **Example**: `export HDX_API_KEY=your_hdx_api_key`
-
-### HDX_OWNER_ORG
-
-- **Description**: The owner organization on HDX.
-- **Required**: Yes
-- **Example**: `export HDX_OWNER_ORG=your_hdx_owner_org`
-
-### HDX_MAINTAINER
-
-- **Description**: The maintainer for the dataset on HDX.
-- **Required**: Yes
-- **Example**: `export HDX_MAINTAINER=your_hdx_maintainer`
-
-### OVERTURE_VERSION
-
-- **Description**: The release version of Overture data.
-- **Default**: `2024-09-18.0`
-- **Example**: `export OVERTURE_VERSION=2024-09-18.0`
-
-### LOG_LEVEL
-
-- **Description**: The logging level.
-- **Default**: `INFO`
-- **Example**: `export LOG_LEVEL=DEBUG`
-
-### LOG_FORMAT
-
-- **Description**: The logging format.
-- **Default**: `%(asctime)s - %(name)s - %(levelname)s - %(message)s`
-- **Example**: `export LOG_FORMAT="%(asctime)s - %(name)s - %(levelname)s - %(message)s"`
-
-### DUCKDB_CON
-
-- **Description**: The DuckDB connection string.
-- **Default**: `:memory:`
-- **Example**: `export DUCKDB_CON=your_duckdb_connection_string`

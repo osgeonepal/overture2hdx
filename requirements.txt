@@ -1,3 +1,0 @@
-duckdb 
-geopandas
-hdx-python-api

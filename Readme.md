@@ -96,7 +96,7 @@ geom = json.dumps(
 )
 iso3 = "NPL"
 dataset_name = "Pokhara, Nepal"
-key = "osegonepal_pkr_"
+key = "osegonepal_pkr"
 subnational = True
 frequency = "yearly"
 

@@ -1,3 +1,9 @@
+## 0.1.1 (2025-03-30)
+
+### Fix
+
+- **lcs**: adds layer creation option and fixes encoding issue
+
 ## 0.1.0 (2025-03-30)
 
 ### Feat

@@ -61,245 +61,26 @@ categories:
 `OvertureMapExporter`: Class to handle the export process.
 `setup_logging`: Function to set up logging.
 
-Example 
-```python
-import json
 
-geom = json.dumps(
-    {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "coordinates": [
-                        [
-                            [83.98047393581618, 28.255338988044088],
-                            [83.973540694181, 28.230486421513703],
-                            [83.91927014759125, 28.214265947308945],
-                            [83.97832224013575, 28.195093119231174],
-                            [83.96971545741735, 28.158212628626416],
-                            [84.00175181531534, 28.19361814379657],
-                            [84.03187555483152, 28.168540447741847],
-                            [84.01059767533235, 28.208788347541898],
-                            [84.0342663278089, 28.255549578267903],
-                            [83.99960011963498, 28.228801292171724],
-                            [83.98047393581618, 28.255338988044088],
-                        ]
-                    ],
-                    "type": "Polygon",
-                },
-            }
-        ],
-    }
-)
-iso3 = "NPL"
-dataset_name = "Pokhara, Nepal"
-key = "osegonepal_pkr"
-subnational = True
-frequency = "yearly"
+### Default export config 
 
-config_yaml = f"""
-iso3: {iso3}
-geom: {geom}
-key: {key}
-subnational: {subnational}
-frequency: {frequency}
-categories:
+Following is the default yaml used 
 
-- Hostpitals:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - categories.primary as category
-    hdx:
-        title: Hospitals of {dataset_name}
-        notes: This dataset includes health POIs (e.g., hospitals and clinics) from Overture Places. Useful for public health logistics and emergency response. Read More, https://docs.overturemaps.org/
-        tags:
-        - health
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-    theme:
-        - places
-    feature_type:
-        - place
-    where:
-        - "categories.primary IN ('hospital', 'clinic')"
-    formats:
-        - gpkg
-        - shp
+| Category              | Description                                                                                   | License              | Overture Theme Docs                                              | Attributes                                                                                          | File Formats         |
+|-----------------------|-----------------------------------------------------------------------------------------------|----------------------|------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|----------------------|
+| **Hospitals**         | Health POIs like hospitals and clinics, from Meta and Microsoft open data                     | CDLA Permissive 2.0  | [Places](https://docs.overturemaps.org/guides/places/)          | `id`, `names.primary`, `names.common.en`, `categories.primary`                                      | `gpkg`, `shp`        |
+| **Schools**           | Education POIs like schools, colleges, universities from Meta and Microsoft                   | CDLA Permissive 2.0  | [Places](https://docs.overturemaps.org/guides/places/)          | `id`, `names.primary`, `names.common.en`, `categories.primary`                                      | `gpkg`, `shp`        |
+| **Rivers**            | Water bodies (rivers, lakes, etc.) from OpenStreetMap via the Base theme                      | ODbL 1.0             | [Base](https://docs.overturemaps.org/guides/base/)              | `id`, `names.primary`, `names.common.en`, `subtype`, `class`                                        | `gpkg`, `shp`        |
+| **Land Use**          | Land use polygons (farmland, forest, etc.) based on OSM landuse tags                          | ODbL 1.0             | [Base](https://docs.overturemaps.org/guides/base/)              | `id`, `names.primary`, `names.common.en`, `subtype`, `class`                                        | `gpkg`, `shp`        |
+| **Transportation Hubs** | Airports, stations, terminals from Meta & Microsoft                                          | CDLA Permissive 2.0  | [Places](https://docs.overturemaps.org/guides/places/)          | `id`, `names.primary`, `names.common.en`, `categories.primary`                                      | `gpkg`, `shp`        |
+| **Settlements**       | Populated places like cities, towns, and villages from OSM, geoBoundaries, and Esri           | ODbL 1.0             | [Divisions](https://docs.overturemaps.org/guides/divisions/)    | `id`, `names.primary`, `names.common.en`, `population`, `country`                                   | `gpkg`, `shp`        |
+| **Roads**             | Road network (highways, local roads, etc.) from OSM and TomTom                                | ODbL 1.0             | [Transportation](https://docs.overturemaps.org/guides/transportation/) | `id`, `names.primary`, `names.common.en`, `class`, `subclass`, `road_surface`, `source`            | `gpkg`, `shp`        |
+| **Buildings**         | Building footprints from OSM, Microsoft, Google, and Esri                                     | ODbL 1.0             | [Buildings](https://docs.overturemaps.org/guides/buildings/)    | `id`, `names.primary`, `names.common.en`, `class`, `subtype`, `height`, `level`, `num_floors`, `source` | `gpkg`, `shp`        |
 
-- Schools:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - categories.primary as category
-    hdx:
-        title: Schools of {dataset_name}
-        notes: This dataset captures education POIs (e.g., schools and universities) from Overture Places. Helpful for response planning, shelter identification, and educational facility analysis. Read More, https://docs.overturemaps.org/
-        tags:
-        - education
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-    theme:
-        - places
-    feature_type:
-        - place
-    where:
-        - "categories.primary IN ('school', 'university', 'college')"
-    formats:
-        - gpkg
-        - shp
 
-- Rivers:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - subtype
-        - class
-    hdx:
-        title: Rivers of {dataset_name}
-        notes: This dataset contains rivers, lakes, and other water bodies from Overture Base data. Important for environmental monitoring and disaster analysis. Read More, https://docs.overturemaps.org/
-        tags:
-        - environment
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-    theme:
-        - base
-    feature_type:
-        - water
-    where:
-        - "class NOT IN ('dam', 'weir', 'breakwater', 'fountain', 'drinking_water')"
-    formats:
-        - gpkg
-        - shp
+### Default python example 
 
-- Land Use:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - subtype
-        - class
-    hdx:
-        title: Land Use of {dataset_name}
-        notes: This dataset covers various land use areas (e.g., farmland, forests) from Overture Base data. Useful for planning, resource management, and disaster recovery efforts. Read More, https://docs.overturemaps.org/
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-        tags:
-        - environment
-    theme:
-        - base
-    feature_type:
-        - land_use
-    formats:
-        - gpkg
-        - shp
-
-- Transportation Hubs:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - categories.primary as category
-    hdx:
-        title: Transportation Hubs of {dataset_name}
-        notes: This dataset includes airports, stations, and terminals from Overture Places. A key resource for mapping mobility infrastructure and logistics. Read More, https://docs.overturemaps.org/
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-        tags:
-        - transportation
-        - logistics
-    theme:
-        - places
-    feature_type:
-        - place
-    where:
-        - "categories.primary IN ('airport', 'train_station', 'bus_station', 'light_rail_and_subway_stations', 'ferry_terminal')"
-    formats:
-        - gpkg
-        - shp
-
-- Settlements:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - population
-        - country
-    hdx:
-        title: Settlements of {dataset_name}
-        notes: This dataset references populated places (cities, towns, villages, hamlets) from Overture Divisions. Crucial for situational awareness and planning. Read More, https://docs.overturemaps.org/
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-        tags:
-        - population
-    theme:
-        - divisions
-    feature_type:
-        - division
-    where:
-        - "subtype = 'locality'"
-    formats:
-        - gpkg
-        - shp
-
-- Roads:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - class as class
-        - subclass as subclass
-        - UNNEST(JSON_EXTRACT(road_surface, '$[*].value')) as road_surface
-        - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
-    hdx:
-        title: Roads of {dataset_name}
-        notes: Overturemaps export containing road data (e.g., highways, local roads). Data may contain known errors but has undergone validation to detect map issues. Sources include OSM, Facebook roads, ESRI, and other open datasets. Useful for transportation analysis and route planning. Read More, https://docs.overturemaps.org/
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-        tags:
-        - geodata
-        - transportation
-        - roads
-    theme:
-        - transportation
-    feature_type:
-        - segment
-    formats:
-        - gpkg
-        - shp
-
-- Buildings:
-    select:
-        - id
-        - names.primary as name
-        - names.common.en as name_en
-        - class as class
-        - subtype as subtype
-        - height as height
-        - level as level
-        - num_floors as num_floors
-        - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
-    hdx:
-        title: Buildings of {dataset_name}
-        notes: Overturemaps export containing building footprints. Data may contain known errors but has undergone some validation. Includes OSM, ESRI, and Facebook-derived building data. Useful for building density studies and urban planning. Read More, https://docs.overturemaps.org/
-        caveats : Data is scrapped from overturemaps directly with the help of overture2hdx. Data might contain errors.
-        tags:
-        - geodata
-    theme:
-        - buildings
-    feature_type:
-        - building
-    formats:
-        - gpkg
-        - shp
-"""
-
-from overture2hdx import Config, Exporter
-
-config = Config(config_yaml=config_yaml)
-exporter = Exporter(config)
-results = exporter.export()
-print(results)
-```
+For default yaml example python implementation , follow [here](./example.py)
 
 ### How it works?
 <img src="https://github.com/user-attachments/assets/c15e09eb-b2d2-4d05-8212-414ab097dd65" alt="overture2hdx" height="800">

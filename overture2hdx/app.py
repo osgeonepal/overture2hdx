@@ -330,7 +330,7 @@ class OvertureMapExporter:
                 file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
                 if file_size_mb > 100:  # For large files, use streaming
                     with open(file_path, "rb") as f:
-                        with zf.open(file_path.name, "w") as dest:
+                        with zf.open(file_path.name, "w", force_zip64=True) as dest:
                             shutil.copyfileobj(f, dest, buffer_size)
                 else:
                     zf.write(file_path, arcname=file_path.name)

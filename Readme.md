@@ -80,7 +80,63 @@ Following is the default yaml used
 
 ### Default python example 
 
-For default yaml example python implementation , follow [here](./example.py)
+```python
+import json
+
+geom = json.dumps(
+    {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "coordinates": [
+                        [
+                            [83.98047393581618, 28.255338988044088],
+                            [83.973540694181, 28.230486421513703],
+                            [83.91927014759125, 28.214265947308945],
+                            [83.97832224013575, 28.195093119231174],
+                            [83.96971545741735, 28.158212628626416],
+                            [84.00175181531534, 28.19361814379657],
+                            [84.03187555483152, 28.168540447741847],
+                            [84.01059767533235, 28.208788347541898],
+                            [84.0342663278089, 28.255549578267903],
+                            [83.99960011963498, 28.228801292171724],
+                            [83.98047393581618, 28.255338988044088],
+                        ]
+                    ],
+                    "type": "Polygon",
+                },
+            }
+        ],
+    }
+)
+iso3 = "NPL"
+dataset_name = "Pokhara, Nepal"
+key = "osegonepal_pkr"
+subnational = True
+frequency = "yearly"
+
+from overture2hdx import DEFAULT_CONFIG_YAML
+
+config_yaml = DEFAULT_CONFIG_YAML.format(
+    iso3=iso3,
+    geom=geom,
+    key=key,
+    subnational=subnational,
+    frequency=frequency,
+    dataset_name=dataset_name,
+)
+
+
+from overture2hdx import Config, Exporter
+
+config = Config(config_yaml=config_yaml)
+exporter = Exporter(config)
+results = exporter.export()
+print(results)
+```
 
 ### How it works?
 <img src="https://github.com/user-attachments/assets/c15e09eb-b2d2-4d05-8212-414ab097dd65" alt="overture2hdx" height="800">

@@ -1,3 +1,13 @@
+## 0.1.0 (2025-03-30)
+
+### Feat
+
+- **readme**: add default Python example for Overture2HDX configuration
+
+### Fix
+
+- **encode**: fixes bug on encoding and adds more attributes to datasets
+
 ## 0.0.6 (2025-03-30)
 
 ### Fix

@@ -461,6 +461,10 @@ class OvertureMapExporter:
                 "caveats",
                 "This is verified by the community overall only but still might have some issues in individual level",
             )
+            hdx_license = hdx.get(
+                "license",
+                "hdx-odc-odbl",
+            )
 
             select_clause = self.build_select_clause(select_fields)
             where_clause = self.build_where_clause(where_conditions)
@@ -498,6 +502,28 @@ class OvertureMapExporter:
 
             dt_name = f"{self.config.hdx_key}_{self.config.country_code.lower()}_{self.slugify(category_name)}"
 
+            dataset_args = {
+                "title": hdx_title,
+                "name": dt_name,
+                "notes": hdx_notes,
+                "caveats": hdx_caveats,
+                "private": False,
+                "dataset_source": "OvertureMap",
+                "methodology": "Other",
+                "methodology_other": "Open Source Geographic information",
+                "owner_org": self.config.HDX_OWNER_ORG,
+                "maintainer": self.config.HDX_MAINTAINER,
+                "subnational": self.config.hdx_subnational,
+            }
+
+            # Handle different license types
+            if hdx_license == "hdx-odc-odbl":
+                dataset_args["license_id"] = hdx_license
+            else:
+                # Custom license - use "hdx-other" and specify in "license_other"
+                dataset_args["license_id"] = "hdx-other"
+                dataset_args["license_other"] = hdx_license
+
             # Create HDX dataset
             dataset = Dataset(
                 {
@@ -509,7 +535,7 @@ class OvertureMapExporter:
                     "dataset_source": "OvertureMap",
                     "methodology": "Other",
                     "methodology_other": "Open Source Geographic information",
-                    "license_id": "hdx-odc-odbl",
+                    "license_id": hdx_license,
                     "owner_org": self.config.HDX_OWNER_ORG,
                     "maintainer": self.config.HDX_MAINTAINER,
                     "subnational": self.config.hdx_subnational,

@@ -423,7 +423,7 @@ class OvertureMapExporter:
                     SELECT * FROM {table_name}
                     WHERE ST_GeometryType(geom) = '{geom_type}'
                 ) TO '{export_filename}' 
-                WITH (FORMAT GDAL, SRS 'EPSG:4326', DRIVER 'ESRI Shapefile', ENCODING 'UTF-8')
+                WITH (FORMAT GDAL, SRS 'EPSG:4326', DRIVER 'ESRI Shapefile', LAYER_CREATION_OPTIONS 'ENCODING=UTF-8,2GB_LIMIT=No')
                 """
                 )
 
@@ -583,7 +583,7 @@ class OvertureMapExporter:
                         # Standard export for other formats
                         filename = f"{dir_path}/{category_name}.{fmt}"
                         category_conn.execute(
-                            f"COPY {table_name} TO '{filename}' WITH (FORMAT GDAL, SRS 'EPSG:4326', DRIVER '{format_drivers.get(fmt)}', ENCODING 'UTF-8')"
+                            f"COPY {table_name} TO '{filename}' WITH (FORMAT GDAL, SRS 'EPSG:4326', DRIVER '{format_drivers.get(fmt)}', LAYER_CREATION_OPTIONS 'ENCODING=UTF-8')"
                         )
                     export_time = time.time() - export_start
 

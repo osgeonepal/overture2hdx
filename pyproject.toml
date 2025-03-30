@@ -8,12 +8,14 @@ authors = [
     {name = "Kshitij Raj Sharma", email = "skshitizraj@gmail.com"},
 ]
 license = {text = "GPL-3.0-only"}
-requires-python = ">=3.9"
+requires-python = ">=3.9,<4.0"
 dependencies = [
     "geopandas>=1.0.1",
     "requests>=2.32.3",
     "duckdb>=1.1.0",
     "hdx-python-api>=6.3.4",
+    "tqdm (>=4.67.1,<5.0.0)",
+    "psutil (>=7.0.0,<8.0.0)",
 ]
 keywords = ["overture", "humanitarian", "duckdb","hdx"]
 classifiers = [
@@ -103,3 +105,6 @@ source = ["overture2hdx"]
 
 [tool.coverage.report]
 show_missing = true
+[tool.poetry.group.dev.dependencies]
+commitizen = "^4.4.1"
+

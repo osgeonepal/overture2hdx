@@ -1,3 +1,10 @@
+## 0.0.5 (2025-03-30)
+
+### Fix
+
+- **schema**: adds default schema and fixes issues with license
+- **license**: adds license info in yaml
+
 ## 0.0.4 (2025-03-30)
 
 ### Fix

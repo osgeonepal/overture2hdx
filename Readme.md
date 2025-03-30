@@ -107,51 +107,6 @@ key: {key}
 subnational: {subnational}
 frequency: {frequency}
 categories:
-- Roads:
-    select:
-        - id
-        - names.primary as name
-        - class as class
-        - subclass as subclass
-        - UNNEST(JSON_EXTRACT(road_surface, '$[*].value')) as road_surface
-        - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
-    hdx:
-        title: Roads of {dataset_name}
-        notes: Overturemaps export containing road data (e.g., highways, local roads). Data may contain known errors but has undergone validation to detect map issues. Sources include OSM, Facebook roads, ESRI, and other open datasets. Useful for transportation analysis and route planning. Read More, https://docs.overturemaps.org/
-        tags:
-        - geodata
-        - transportation
-        - roads
-    theme:
-        - transportation
-    feature_type:
-        - segment
-    formats:
-        - gpkg
-        - shp
-
-- Buildings:
-    select:
-        - id
-        - names.primary as name
-        - class as class
-        - subtype as subtype
-        - height as height
-        - level as level
-        - num_floors as num_floors
-        - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
-    hdx:
-        title: Buildings of {dataset_name}
-        notes: Overturemaps export containing building footprints. Data may contain known errors but has undergone validation. Includes OSM, ESRI, and Facebook-derived building data. Useful for building density studies and urban planning. Read More, https://docs.overturemaps.org/
-        tags:
-        - geodata
-    theme:
-        - buildings
-    feature_type:
-        - building
-    formats:
-        - gpkg
-        - shp
 
 - Healthcare Facilities:
     select:
@@ -274,6 +229,53 @@ categories:
     formats:
         - gpkg
         - shp
+
+- Roads:
+    select:
+        - id
+        - names.primary as name
+        - class as class
+        - subclass as subclass
+        - UNNEST(JSON_EXTRACT(road_surface, '$[*].value')) as road_surface
+        - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
+    hdx:
+        title: Roads of {dataset_name}
+        notes: Overturemaps export containing road data (e.g., highways, local roads). Data may contain known errors but has undergone validation to detect map issues. Sources include OSM, Facebook roads, ESRI, and other open datasets. Useful for transportation analysis and route planning. Read More, https://docs.overturemaps.org/
+        tags:
+        - geodata
+        - transportation
+        - roads
+    theme:
+        - transportation
+    feature_type:
+        - segment
+    formats:
+        - gpkg
+        - shp
+
+- Buildings:
+    select:
+        - id
+        - names.primary as name
+        - class as class
+        - subtype as subtype
+        - height as height
+        - level as level
+        - num_floors as num_floors
+        - UNNEST(JSON_EXTRACT(sources, '$[*].dataset')) AS source
+    hdx:
+        title: Buildings of {dataset_name}
+        notes: Overturemaps export containing building footprints. Data may contain known errors but has undergone validation. Includes OSM, ESRI, and Facebook-derived building data. Useful for building density studies and urban planning. Read More, https://docs.overturemaps.org/
+        tags:
+        - geodata
+    theme:
+        - buildings
+    feature_type:
+        - building
+    formats:
+        - gpkg
+        - shp
+
 """
 
 from overture2hdx import Config, Exporter

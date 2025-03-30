@@ -108,13 +108,14 @@ subnational: {subnational}
 frequency: {frequency}
 categories:
 
-- Healthcare Facilities:
+
+- Hostpitals:
     select:
         - id
         - names.primary as name
         - categories.primary as category
     hdx:
-        title: Healthcare Facilities of {dataset_name}
+        title: Hospitals of {dataset_name}
         notes: This dataset includes health POIs (e.g., hospitals and clinics) from Overture Places. Useful for public health logistics and emergency response. Read More, https://docs.overturemaps.org/
         tags:
         - health
@@ -128,13 +129,13 @@ categories:
         - gpkg
         - shp
 
-- Educational Facilities:
+- Schools :
     select:
         - id
         - names.primary as name
         - categories.primary as category
     hdx:
-        title: Educational Facilities of {dataset_name}
+        title: Schools of {dataset_name}
         notes: This dataset captures education POIs (e.g., schools and universities) from Overture Places. Helpful for response planning, shelter identification, and educational facility analysis. Read More, https://docs.overturemaps.org/
         tags:
         - education
@@ -148,14 +149,14 @@ categories:
         - gpkg
         - shp
 
-- Water Bodies:
+- Rivers:
     select:
         - id
         - names.primary as name
         - subtype
         - class
     hdx:
-        title: Water Bodies of {dataset_name}
+        title: Rivers of {dataset_name}
         notes: This dataset contains rivers, lakes, and other water bodies from Overture Base data. Important for environmental monitoring and disaster analysis. Read More, https://docs.overturemaps.org/
         tags:
         - environment

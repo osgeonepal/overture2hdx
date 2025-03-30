@@ -276,8 +276,6 @@ categories:
         - shp
 """
 
-
-
 from overture2hdx import Config, Exporter
 
 config = Config(config_yaml=config_yaml)

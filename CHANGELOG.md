@@ -1,3 +1,10 @@
+## 0.0.6 (2025-03-30)
+
+### Fix
+
+- **file**: fixes bug on file too large
+- **yaml**: fixes bug with categories in tphub
+
 ## 0.0.5 (2025-03-30)
 
 ### Fix

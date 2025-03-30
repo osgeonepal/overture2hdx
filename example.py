@@ -56,6 +56,15 @@ categories:
         - health
         license: CDLA Permissive 2.0
         caveats: Contains hospital locations from the Overture Places theme, derived from Meta and Microsoft data. Licensed under CDLA Permissive 2.0. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
+    theme:
+        - places
+    feature_type:
+        - place
+    where:
+        - "categories.primary IN ('hospital', 'clinic')"
+    formats:
+        - gpkg
+        - shp
 
 - Schools:
     select:
@@ -70,6 +79,15 @@ categories:
         - education
         license: CDLA Permissive 2.0
         caveats: Contains school POIs from Meta and Microsoft via Overture Places. Licensed under CDLA Permissive 2.0. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
+    theme:
+        - places
+    feature_type:
+        - place
+    where:
+        - "categories.primary IN ('hospital', 'clinic')"
+    formats:
+        - gpkg
+        - shp
 
 - Rivers:
     select:
@@ -85,6 +103,15 @@ categories:
         - environment
         license: ODbL 1.0
         caveats: Includes OpenStreetMap-derived hydrography under the Open Database License (ODbL). Share-alike and attribution are required. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
+    theme:
+        - base
+    feature_type:
+        - water
+    where:
+        - "class NOT IN ('dam', 'weir', 'breakwater', 'fountain', 'drinking_water')"
+    formats:
+        - gpkg
+        - shp
 
 - Land Use:
     select:
@@ -100,6 +127,13 @@ categories:
         - environment
         license: ODbL 1.0
         caveats: Contains land use data derived from OpenStreetMap. Distributed under ODbL v1.0. Attribution and share-alike are required. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
+    theme:
+        - base
+    feature_type:
+        - land_use
+    formats:
+        - gpkg
+        - shp
 
 - Transportation Hubs:
     select:
@@ -115,7 +149,15 @@ categories:
         - logistics
         license: CDLA Permissive 2.0
         caveats: Contains transportation POIs (e.g., airports, stations) from Meta and Microsoft via Overture Places. Licensed under CDLA Permissive 2.0. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
+    theme:
+        - base
+    feature_type:
+        - land_use
+    formats:
+        - gpkg
+        - shp
 
+        
 - Settlements:
     select:
         - id
@@ -130,6 +172,15 @@ categories:
         - population
         license: ODbL 1.0
         caveats: Includes settlement-level boundaries from OSM (ODbL), geoBoundaries (CC BY), and Esri (CC BY). Final dataset is ODbL-licensed. Share-alike and attribution required. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
+    theme:
+        - divisions
+    feature_type:
+        - division
+    where:
+        - "subtype = 'locality'"
+    formats:
+        - gpkg
+        - shp
 
 - Roads:
     select:
@@ -150,6 +201,14 @@ categories:
         license: ODbL 1.0
         caveats: Contains roads from OSM and TomTom via Overture. Licensed under ODbL v1.0. Attribution and share-alike required. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
 
+    theme:
+        - transportation
+    feature_type:
+        - segment
+    formats:
+        - gpkg
+        - shp
+        
 - Buildings:
     select:
         - id
@@ -170,6 +229,14 @@ categories:
         - infrastructure
         license: ODbL 1.0
         caveats: Includes building data from OSM (ODbL), Microsoft (ODbL), Google (CC BY), and Esri (CC BY). Final dataset is ODbL-licensed. Attribution and share-alike required. Data might contain errors and was scraped and published using the Overture public release via the overture2hdx package.
+    theme:
+        - buildings
+    feature_type:
+        - building
+    formats:
+        - gpkg
+        - shp
+
 """
 
 

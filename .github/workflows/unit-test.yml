@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install Poetry
         run: |
@@ -42,4 +42,4 @@ jobs:
 
       - name: Run tests
         run: |
-          poetry run python -m tests.test_real_export
+          poetry run python -m tests.test_app

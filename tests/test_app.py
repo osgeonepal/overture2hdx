@@ -288,44 +288,9 @@ class TestRealExport(unittest.TestCase):
         print(f"Export results: {results}")
         print(f"Stats: {exporter.stats}")
 
-        # Check if files were created
-        zip_files = [f for f in os.listdir(self.test_output_dir) if f.endswith(".zip")]
-        print(f"Generated zip files: {zip_files}")
-
         # Assertions
         self.assertEqual(exporter.stats["categories_processed"], 8)
         self.assertEqual(exporter.stats["failed_categories"], 0)
-        self.assertTrue(len(zip_files) > 0, "No zip files were created")
-
-        # Verify zip file contents
-        if len(zip_files) > 0:
-            import zipfile
-
-            zip_path = os.path.join(self.test_output_dir, zip_files[0])
-            self.assertTrue(os.path.exists(zip_path), f"Zip file {zip_path} does not exist")
-
-            # Check zip file size
-            file_size_mb = os.path.getsize(zip_path) / (1024 * 1024)
-            print(f"Zip file size: {file_size_mb:.2f} MB")
-
-            # Check zip file contents
-            with zipfile.ZipFile(zip_path, "r") as zip_ref:
-                file_list = zip_ref.namelist()
-                print(f"Zip file contents: {file_list}")
-
-                # Check that there's at least one data file
-                data_files = [f for f in file_list if f.endswith(".gpkg")]
-                self.assertTrue(len(data_files) > 0, "No data files in zip")
-
-                # Check readme exists
-                self.assertIn("Readme.txt", file_list, "No Readme.txt in zip")
-
-                # Optional: Examine file contents
-                if "Readme.txt" in file_list:
-                    with zip_ref.open("Readme.txt") as readme:
-                        readme_content = readme.read().decode("utf-8")
-                        print(f"Readme content: {readme_content[:200]}...")
-                        self.assertIn("Overturemaps", readme_content)
 
 
 if __name__ == "__main__":

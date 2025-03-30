@@ -99,9 +99,10 @@ dataset_name = "Pokhara, Nepal"
 key = "osegonepal_pkr_"
 subnational = True
 frequency = "yearly"
+
 config_yaml = f"""
 iso3: {iso3}
-geom: {test_geom}
+geom: {geom}
 key: {key}
 subnational: {subnational}
 frequency: {frequency}
@@ -279,7 +280,7 @@ categories:
 
 from overture2hdx import Config, Exporter
 
-config = Config(config_yaml=config_yaml_mini)
+config = Config(config_yaml=config_yaml)
 exporter = Exporter(config)
 results = exporter.export()
 print(results)

@@ -454,7 +454,7 @@ class OvertureMapExporter:
             where_conditions = category_config.get("where", [])
             output_formats = category_config.get("formats", [])
             hdx = category_config.get("hdx")
-            hdx_title = hdx.get("title", f"{category_name} of {self.config.get('dataset_name')}")
+            hdx_title = hdx.get("title", f"{category_name} of {self.config.dataset_name}")
             hdx_notes = hdx.get("notes", "Overturemaps Export to use in GIS applications")
             hdx_tags = hdx.get("tags", ["geodata"])
             hdx_caveats = hdx.get(

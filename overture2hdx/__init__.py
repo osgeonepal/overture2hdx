@@ -7,6 +7,7 @@ geom: {geom}
 key: {key}
 subnational: {subnational}
 frequency: {frequency}
+dataset_name: {dataset_name}
 categories:
 
 - Hospitals:
@@ -22,11 +23,12 @@ categories:
         - confidence
         - sources[1].dataset AS source
     hdx:
-        title: Hospitals of {dataset_name}
+
         notes: This dataset includes health points of interest (e.g., hospitals and clinics) from the Overture Places theme, derived from open data provided by Meta and Microsoft. Useful for public health logistics and emergency response. Read more at https://docs.overturemaps.org/guides/places/
         tags:
         - health
         license: CDLA Permissive 2.0
+        license_url: https://cdla.dev/permissive-2-0/
         caveats: Contains hospital locations from the Overture Places theme, derived from Meta and Microsoft data. Licensed under CDLA Permissive 2.0. Data might contain errors and was processed and published using the Overture public release via the overture2hdx package.
     theme:
         - places
@@ -50,11 +52,11 @@ categories:
         - confidence
         - sources[1].dataset AS source
     hdx:
-        title: Schools of {dataset_name}
         notes: This dataset captures educational points of interest (e.g., schools and universities) from the Overture Places theme, using Meta and Microsoft open data. Read more at https://docs.overturemaps.org/guides/places/
         tags:
         - education
         license: CDLA Permissive 2.0
+        license_url: https://cdla.dev/permissive-2-0/
         caveats: Contains school points of interest from Meta and Microsoft via Overture Places. Licensed under CDLA Permissive 2.0. Data might contain errors and was processed and published using the Overture public release via the overture2hdx package.
     theme:
         - places
@@ -77,7 +79,6 @@ categories:
         - wikidata
         - sources[1].dataset AS source
     hdx:
-        title: Rivers of {dataset_name}
         notes: This dataset contains rivers, lakes, and other water features from the Overture Base theme, primarily sourced from OpenStreetMap. Read more at https://docs.overturemaps.org/guides/base/
         tags:
         - environment
@@ -104,7 +105,6 @@ categories:
         - wikidata
         - sources[1].dataset AS source
     hdx:
-        title: Land Use of {dataset_name}
         notes: This dataset covers land use polygons (e.g., farmland, forests) from the Overture Base theme, derived primarily from OpenStreetMap landuse tags. Read more at https://docs.overturemaps.org/guides/base/
         tags:
         - environment
@@ -130,12 +130,12 @@ categories:
         - confidence
         - sources[1].dataset AS source
     hdx:
-        title: Transportation Hubs of {dataset_name}
         notes: This dataset includes airports, train stations, and terminals from the Overture Places theme, derived from Meta and Microsoft open data. Read more at https://docs.overturemaps.org/guides/places/
         tags:
         - transportation
         - logistics
         license: CDLA Permissive 2.0
+        license_url: https://cdla.dev/permissive-2-0/
         caveats: Contains transportation points of interest (e.g., airports, stations) from Meta and Microsoft via Overture Places. Licensed under CDLA Permissive 2.0. Data might contain errors and was processed and published using the Overture public release via the overture2hdx package.
     theme:
         - places
@@ -157,7 +157,6 @@ categories:
         - wikidata
         - sources[1].dataset AS source
     hdx:
-        title: Settlements of {dataset_name}
         notes: This dataset includes populated places (cities, towns, villages, hamlets) from the Overture Divisions theme, which merges boundaries from OpenStreetMap, geoBoundaries, and Esri. Read more at https://docs.overturemaps.org/guides/divisions/
         tags:
         - population
@@ -184,7 +183,6 @@ categories:
         - road_surface[1].value as road_surface
         - sources[1].dataset AS source
     hdx:
-        title: Roads of {dataset_name}
         notes: This dataset includes road networks (e.g., highways, local roads) from the Overture Transportation theme, sourced from OpenStreetMap and TomTom. Read more at https://docs.overturemaps.org/guides/transportation/
         tags:
         - geodata
@@ -218,7 +216,6 @@ categories:
         - roof_color
         - sources[1].dataset AS source
     hdx:
-        title: Buildings of {dataset_name}
         notes: This dataset includes building footprints from the Overture Buildings theme. Sources include OSM, Microsoft Global ML Buildings, Google Open Buildings, and Esri Community Maps. Read more at https://docs.overturemaps.org/guides/buildings/
         tags:
         - geodata

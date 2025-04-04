@@ -454,7 +454,7 @@ class OvertureMapExporter:
             where_conditions = category_config.get("where", [])
             output_formats = category_config.get("formats", [])
             hdx = category_config.get("hdx")
-            hdx_title = hdx.get("title")
+            hdx_title = hdx.get("title", f"{category_name} of {self.config.get('dataset_name')}")
             hdx_notes = hdx.get("notes", "Overturemaps Export to use in GIS applications")
             hdx_tags = hdx.get("tags", ["geodata"])
             hdx_caveats = hdx.get(
@@ -464,6 +464,10 @@ class OvertureMapExporter:
             hdx_license = hdx.get(
                 "license",
                 "hdx-odc-odbl",
+            )
+            hdx_license_url = hdx.get(
+                "license_url",
+                None,
             )
 
             select_clause = self.build_select_clause(select_fields)
@@ -523,24 +527,10 @@ class OvertureMapExporter:
                 # Custom license - use "hdx-other" and specify in "license_other"
                 dataset_args["license_id"] = "hdx-other"
                 dataset_args["license_other"] = hdx_license
-
+            if hdx_license_url:
+                dataset_args["license_url"] = hdx_license_url
             # Create HDX dataset
-            dataset = Dataset(
-                {
-                    "title": hdx_title,
-                    "name": dt_name,
-                    "notes": hdx_notes,
-                    "caveats": hdx_caveats,
-                    "private": False,
-                    "dataset_source": "OvertureMap",
-                    "methodology": "Other",
-                    "methodology_other": "Open Source Geographic information",
-                    "license_id": hdx_license,
-                    "owner_org": self.config.HDX_OWNER_ORG,
-                    "maintainer": self.config.HDX_MAINTAINER,
-                    "subnational": self.config.hdx_subnational,
-                }
-            )
+            dataset = Dataset(dataset_args)
             dataset.set_time_period(datetime.strptime(self.config.OVERTURE_RELEASE_VERSION.split(".")[0], "%Y-%m-%d"))
             dataset.set_expected_update_frequency(self.config.frequency)
             dataset.add_other_location(self.config.country_code)
